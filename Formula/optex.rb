@@ -6,7 +6,7 @@ class Optex < Formula
   homepage "https://petr.olsak.net/optex/"
   url "https://github.com/olsak/OpTeX/archive/refs/tags/v1.19.tar.gz"
   sha256 "f87bb8b3d98a9924786c3ae1b0f9f7bdda4524512ef60f5fa7ec8f9df0395017"
-  license "LicenseRef-public-domain"
+  license :public_domain
 
   depends_on "luahbtex"
 
@@ -68,7 +68,7 @@ class Optex < Formula
     resource("lualibs").stage do
       cp_r Dir["*"], texmf
     end
-    
+
     resource("lua-uni-algos").stage do
       (texmf/"tex/luatex/lua-uni-algos").mkpath
       (texmf/"tex/luatex/lua-uni-algos").install Dir["*.lua"]
@@ -111,7 +111,15 @@ class Optex < Formula
     man_page = "optex/doc/optex.1"
     man1.install man_page => "optex.1"
   end
-  
+
+  def caveats
+    <<~EOS
+      OpTeX requires Unicode fonts at runtime. Install Latin Modern with:
+        brew install --cask font-latin-modern font-latin-modern-math
+      Or use any system font with \\fontfam at the top of your document.
+    EOS
+  end
+
   test do
     (testpath/"hello.tex").write <<~EOS
       \\fontfam[lm]
@@ -121,13 +129,5 @@ class Optex < Formula
 
     system bin/"optex", "hello.tex"
     assert_path_exists testpath/"hello.pdf"
-  end
-  
-  def caveats
-    <<~EOS
-    OpTeX requires Unicode fonts at runtime. Install Latin Modern with:
-      brew install --cask font-latin-modern font-latin-modern-math
-    Or use any system font with \\fontfam at the top of your document.
-  EOS
   end
 end
