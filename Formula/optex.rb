@@ -28,6 +28,12 @@ class Optex < Formula
     sha256 "e4e8ebad20cee00f2905d833e8ef4e8a221e22899178a5eeda87f55510fc97b7"
   end
 
+  # math font?
+  resource "rsfs" do
+    url "https://mirrors.ctan.org/systems/texlive/tlnet/archive/rsfs.tar.xz"
+    sha256 "1afec0c5e9711f652675e38b7cd7e88101c44aa0d0ff317ad6ac06f1d2cc7043"
+  end
+
   # Dependencies of luaotfload
   resource "lualibs" do
     url "https://mirrors.ctan.org/install/macros/luatex/generic/lualibs.tds.zip"
@@ -72,6 +78,10 @@ class Optex < Formula
     resource("lua-uni-algos").stage do
       (texmf/"tex/luatex/lua-uni-algos").mkpath
       (texmf/"tex/luatex/lua-uni-algos").install Dir["*.lua"]
+    end
+
+    resource("rsfs").stage do
+      cp_r Dir["*"], texmf
     end
 
     (texmf/"web2c").mkpath
@@ -122,7 +132,8 @@ class Optex < Formula
 
   test do
     (testpath/"hello.tex").write <<~EOS
-      \\fontfam[lm]
+        
+      \\font{Helvetica}
       hello world
       \\bye
     EOS
