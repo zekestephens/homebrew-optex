@@ -83,6 +83,19 @@ class Optex < Formula
     resource("rsfs").stage do
       cp_r Dir["*"], texmf
     end
+    
+    (texmf/"fonts/map/pdftex/updmap").mkpath
+
+    master_map = ""
+    good_maps = ["rsfs.map"]
+
+    Dir[texmf/"**/*.map"].each do |map_file|
+      if good_maps.include?(File.basename(map_file).to_s)
+        master_map += File.read(map_file) + "\n"
+      end
+    end
+
+    (texmf/"fonts/map/pdftex/updmap/pdftex.map").write master_map
 
     (texmf/"web2c").mkpath
     (texmf/"web2c/texmf.cnf").write <<~EOS
