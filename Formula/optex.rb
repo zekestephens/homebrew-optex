@@ -106,6 +106,10 @@ class Optex < Formula
       LUAINPUTS = .;$TEXMFHOME/tex//;$TEXMF/tex//;$TEXMF/scripts//
       TEXFORMATS = .;$TEXMF/web2c//
 
+      TFMFONTS = .;$TEXMF/fonts/tfm//
+      T1FONTS = .;$TEXMF/fonts/type1//
+      TEXFONTMAPS = .;$TEXMF/fonts/map//
+
       openin_any = a
       openout_any = p
 
